@@ -85,6 +85,18 @@ def main():
                 break
             elif e.type == pg.MOUSEBUTTONDOWN and e.button == 1:
                 WINCENTER[:] = list(e.pos)
+
+        # Move the center of the screen around, yay.
+        pressed_keys: list[bool] = pg.key.get_pressed()
+        if pressed_keys[pg.K_LEFT]:
+            WINCENTER[0] -= 1
+        if pressed_keys[pg.K_RIGHT]:
+            WINCENTER[0] += 1
+        if pressed_keys[pg.K_UP]:
+            WINCENTER[1] -= 1
+        if pressed_keys[pg.K_DOWN]:
+            WINCENTER[1] += 1
+
         clock.tick(50)
     pg.quit()
 
