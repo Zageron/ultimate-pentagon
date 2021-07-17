@@ -58,7 +58,7 @@ MVP: Minimum Viable Product
 
     > ```zsh
     > poetry install
-    > ```.
+    > ```
 
 - <kbd>F5</kbd> in `src/pentagon/__main__.py` to debug.
 
