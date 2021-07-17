@@ -13,5 +13,10 @@
 - Visual Studio Code should open.
 - Close the command line.
 - In VSC, open the embedded CLI with `Ctrl +` `
-- Type poetry install.
+- Type
+
+    > ```zsh
+    > poetry install
+    > ```.
+
 - <kbd>F5</kbd> in `src/pentagon/__main__.py` to debug.
