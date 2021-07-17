@@ -6,5 +6,9 @@
     "python.linting.flake8Args": [
         "--max-line-length=88"
     ],
+    "python.linting.pylintArgs": [
+        "--extension-pkg-whitelist=lxml",
+        "--generate-members"
+    ],
     "editor.formatOnSave": true,
 }
