@@ -1,5 +1,14 @@
 # Ultimate Octagon
 
+MVP: Minimum Viable Product
+
+- [Ultimate Octagon](#ultimate-octagon)
+  - [Game Design](#game-design)
+    - [MVP 1](#mvp-1)
+    - [MVP 2](#mvp-2)
+  - [Developing](#developing)
+  - [Package for Distribution](#package-for-distribution)
+
 ## Game Design
 
 ### MVP 1
