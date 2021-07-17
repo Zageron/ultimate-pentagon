@@ -20,3 +20,11 @@
     > ```.
 
 - <kbd>F5</kbd> in `src/pentagon/__main__.py` to debug.
+
+## Package for Distribution
+
+Run the following command!
+
+> ```zsh
+> nuitka -o package/UltimatePentagon.exe --output-dir=package --remove-output src/pentagon/__main__.py
+> ```
