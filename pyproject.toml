@@ -1,0 +1,25 @@
+
+[tool.poetry]
+name = "ultimate-pentagon"
+version = "0.0.1"
+description = "Fun little space themed dodge the circle segments game."
+authors = ["Zageron <hello@adambryant.ca>", "Rapta <raptorindian@gmail.com>"]
+repository = "https://github.com/Zageron/ultimate-pentagon"
+
+packages = [{ include = "pentagon", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pygame = "^2.0.1"
+Nuitka = "^0.6.16"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.8.2"
+pylint = "^2.5.2"
+black = "^19.10b0"
+pytest = "^5.4.2"
+pyinstaller = "^3.6"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
