@@ -15,6 +15,29 @@ WINCENTER = [320, 240]
 NUMSTARS = 150
 
 
+class Field:
+    """Defines the limitations of the play field."""
+
+    MIN_POSITION: int = 0
+    MAX_POSITION: int = 360
+
+
+class Character:
+    """Holds position data."""
+
+    position: int = 0
+
+
+def position_character():
+    """Positions the character in an arc around a set point."""
+    pass
+
+
+def move_character():
+    """Move the character along a virtual 1D line."""
+    pass
+
+
 def init_star():
     "creates new star values"
     dir = random.randrange(100000)
