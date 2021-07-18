@@ -10,9 +10,9 @@ import math
 import pygame as pg
 
 # constants
-WINSIZE = [640, 480]
-WINCENTER = [320, 240]
-NUMSTARS = 150
+WINSIZE = [640, 640]
+WINCENTER = [320, 320]
+NUMSTARS = 10
 
 
 class Character:
@@ -97,6 +97,12 @@ def move_stars(stars):
             vel[1] = vel[1] * 1.05
 
 
+def update_fps(clock, font):
+    fps = str(int(clock.get_fps()))
+    fps_text = font.render(fps, 1, pg.Color("coral"))
+    return fps_text
+
+
 def main():
     "This is the starfield code"
 
@@ -117,11 +123,13 @@ def main():
     red = 255, 0, 0
     screen.fill(black)
 
+    clock = pg.time.Clock()
+    font = pg.font.SysFont("Arial", 18)
+
     # main game loop
     done = 0
     while not done:
-        dt = clock.tick(60)
-
+        dt = clock.tick(120)
         screen.fill(black)
         draw_stars(screen, stars, black)
         move_stars(stars)
@@ -129,6 +137,7 @@ def main():
 
         x, y = field.get_position(character)
         draw_circle(screen, red, x, y)
+        screen.blit(update_fps(clock, font), (10, 0))
 
         pg.display.update()
         for e in pg.event.get():
