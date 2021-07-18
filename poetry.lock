@@ -217,6 +217,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "pygame-gui"
+version = "0.5.7"
+description = "A GUI module for pygame 2"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+pygame = ">=1.9.5"
+
+[[package]]
 name = "pyinstaller"
 version = "3.6"
 description = "PyInstaller bundles a Python application and all its dependencies into a single package."
@@ -316,7 +327,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "d010f04b1f1d3f146ab632bf7a78cf203fedc6225f37bc9df86a616c46590cef"
+content-hash = "308e7199371b6ec39d688a7c1b9c8410ec258fae62ea9c5e075e990d073b9546"
 
 [metadata.files]
 altgraph = [
@@ -465,6 +476,9 @@ pygame = [
     {file = "pygame-2.0.1-pp37-pypy37_pp73-manylinux2010_i686.whl", hash = "sha256:a4e35d89b6754941e82df1ce980a1c370943d3c076938d94ed1e48165dd6a11b"},
     {file = "pygame-2.0.1-pp37-pypy37_pp73-manylinux2010_x86_64.whl", hash = "sha256:b812285d23b5644c643a6ae30553a772f935f47f61826660b108b8727936384b"},
     {file = "pygame-2.0.1.tar.gz", hash = "sha256:8b1e7b63f47aafcdd8849933b206778747ef1802bd3d526aca45ed77141e4001"},
+]
+pygame-gui = [
+    {file = "pygame_gui-0.5.7.tar.gz", hash = "sha256:a699c6c5c3f080c37955a1f53bf4d4d8c48b77b49ae3fe5eec925f05b8c1145a"},
 ]
 pyinstaller = [
     {file = "PyInstaller-3.6.tar.gz", hash = "sha256:3730fa80d088f8bb7084d32480eb87cbb4ddb64123363763cf8f2a1378c1c4b7"},

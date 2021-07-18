@@ -12,6 +12,7 @@ packages = [{ include = "pentagon", from = "src" }]
 python = "^3.9"
 pygame = "^2.0.1"
 Nuitka = "^0.6.16"
+pygame-gui = "^0.5.7"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.2"
