@@ -15,27 +15,38 @@ WINCENTER = [320, 240]
 NUMSTARS = 150
 
 
-class Field:
-    """Defines the limitations of the play field."""
-
-    MIN_POSITION: int = 0
-    MAX_POSITION: int = 360
-
-
 class Character:
     """Holds position data."""
 
     position: int = 0
+    MIN_POSITION: int = 0
+    MAX_POSITION: int = 360
+    RANGE: int = MAX_POSITION - MIN_POSITION
+    INV_RANGE: int = 1 / RANGE
+
+    def __init__(self, new_position=0) -> None:
+        """ Initialize a character at the initial position. """
+        self.position = new_position
+
+    def move(self, distance: int) -> None:
+        """Move the character along a virtual 1D line."""
+        self.position += distance
+        self.position = self.position - (
+            self.RANGE * math.floor(distance * self.INV_RANGE)
+        )
 
 
-def position_character():
-    """Positions the character in an arc around a set point."""
-    pass
+class Field:
+    """Defines the limitations of the play field."""
 
+    RADIUS: int = 60
 
-def move_character():
-    """Move the character along a virtual 1D line."""
-    pass
+    def get_position(self, character: Character) -> tuple[int, int]:
+        """Positions the character in an arc around a set point."""
+        x = self.RADIUS * math.sin(math.radians(character.position))
+        y = self.RADIUS * math.cos(math.radians(character.position))
+
+        return x, y
 
 
 def init_star():
@@ -69,6 +80,11 @@ def draw_stars(surface, stars, color):
         surface.set_at(pos, color)
 
 
+def draw_circle(surface, color, x, y):
+    """ Draws a simple circle representing the character. """
+    pg.draw.circle(surface, color, (WINCENTER[0] + x, WINCENTER[1] + y), 10)
+
+
 def move_stars(stars):
     "animate the star values"
     for vel, pos in stars:
@@ -83,6 +99,11 @@ def move_stars(stars):
 
 def main():
     "This is the starfield code"
+
+    # Create our field and character
+    character: Character = Character()
+    field: Field = Field()
+
     # create our starfield
     random.seed()
     stars = initialize_stars()
@@ -93,34 +114,34 @@ def main():
     pg.display.set_caption("pygame Stars Example")
     white = 255, 240, 200
     black = 20, 20, 40
+    red = 255, 0, 0
     screen.fill(black)
 
     # main game loop
     done = 0
     while not done:
+        dt = clock.tick(60)
+
+        screen.fill(black)
         draw_stars(screen, stars, black)
         move_stars(stars)
         draw_stars(screen, stars, white)
+
+        x, y = field.get_position(character)
+        draw_circle(screen, red, x, y)
+
         pg.display.update()
         for e in pg.event.get():
             if e.type == pg.QUIT or (e.type == pg.KEYUP and e.key == pg.K_ESCAPE):
                 done = 1
                 break
-            elif e.type == pg.MOUSEBUTTONDOWN and e.button == 1:
-                WINCENTER[:] = list(e.pos)
 
         # Move the center of the screen around, yay.
         pressed_keys: list[bool] = pg.key.get_pressed()
         if pressed_keys[pg.K_LEFT]:
-            WINCENTER[0] -= 1
+            character.move(0.25 * dt)
         if pressed_keys[pg.K_RIGHT]:
-            WINCENTER[0] += 1
-        if pressed_keys[pg.K_UP]:
-            WINCENTER[1] -= 1
-        if pressed_keys[pg.K_DOWN]:
-            WINCENTER[1] += 1
-
-        clock.tick(50)
+            character.move(-0.25 * dt)
     pg.quit()
 
 
