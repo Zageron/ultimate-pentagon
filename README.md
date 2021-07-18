@@ -1,6 +1,9 @@
 # Ultimate Octagon
 
 MVP: Minimum Viable Product
+MVP: Minimum Viable Product
+MVP: Minimum Viable Product
+MVP: Minimum Viable Product
 
 - [Ultimate Octagon](#ultimate-octagon)
   - [Game Design](#game-design)
@@ -40,6 +43,8 @@ MVP: Minimum Viable Product
   - Shows your personal best scores. (in seconds)
 - (State) Game
   - Obstacles are generated from the music
+- (Feature) Fractals
+  - Maybe we can try to avoid fractals.
 
 ## Developing
 
