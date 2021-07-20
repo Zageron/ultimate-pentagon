@@ -121,6 +121,7 @@ def main():
     white = 255, 240, 200
     black = 20, 20, 40
     red = 255, 0, 0
+    green = (0, 255, 0)
     screen.fill(black)
 
     clock = pg.time.Clock()
@@ -131,9 +132,28 @@ def main():
     while not done:
         dt = clock.tick(120)
         screen.fill(black)
-        draw_stars(screen, stars, black)
-        move_stars(stars)
-        draw_stars(screen, stars, white)
+        offset = 40
+
+        # Generate points
+        length_of_side_point = math.sqrt(2) / 2
+
+        original_points = [
+            (0, 1),
+            (length_of_side_point, length_of_side_point),
+            (1, 0),
+            (length_of_side_point, -length_of_side_point),
+            (0, -1),
+            (-length_of_side_point, -length_of_side_point),
+            (-1, 0),
+            (-length_of_side_point, length_of_side_point),
+        ]
+        translated_points = list()
+        for point in original_points:
+            translated_points.append(
+                (point[0] * offset + WINCENTER[0], point[1] * offset + WINCENTER[1])
+            )
+
+        pg.draw.polygon(screen, green, translated_points, 1)
 
         x, y = field.get_position(character)
         draw_circle(screen, red, x, y)
