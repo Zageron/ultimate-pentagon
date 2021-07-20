@@ -49,35 +49,21 @@ class Field:
         return x, y
 
 
-def init_star():
-    "creates new star values"
-    dir = random.randrange(100000)
-    velmult = random.random() * 0.6 + 0.4
-    vel = [math.sin(dir) * velmult, math.cos(dir) * velmult]
-    return vel, WINCENTER[:]
+def create_obstacle(obstacle_positions: list[int], obstacle_segments: list[int]):
+    index = 0
+    for obstacle in obstacle_positions:
+        index += 1
+        if obstacle == -1:
+            obstacle = 1
+
+    # Match the index of the new obstacle position so that we're using the same index.
+    # Use this for positioning around the octagon.
+    obstacle_segments[index]
 
 
-def initialize_stars():
-    "creates a new starfield"
-    stars = []
-    for x in range(NUMSTARS):
-        star = init_star()
-        vel, pos = star
-        steps = random.randint(0, WINCENTER[0])
-        pos[0] = pos[0] + (vel[0] * steps)
-        pos[1] = pos[1] + (vel[1] * steps)
-        vel[0] = vel[0] * (steps * 0.09)
-        vel[1] = vel[1] * (steps * 0.09)
-        stars.append(star)
-    move_stars(stars)
-    return stars
-
-
-def draw_stars(surface, stars, color):
-    "used to draw (and clear) the stars"
-    for vel, pos in stars:
-        pos = (int(pos[0]), int(pos[1]))
-        surface.set_at(pos, color)
+def update_obstacle_progress(obstacle_positions, amount: int):
+    for obstacle in obstacle_positions:
+        obstacle += amount
 
 
 def draw_circle(surface, color, x, y):
@@ -85,22 +71,29 @@ def draw_circle(surface, color, x, y):
     pg.draw.circle(surface, color, (WINCENTER[0] + x, WINCENTER[1] + y), 10)
 
 
-def move_stars(stars):
-    "animate the star values"
-    for vel, pos in stars:
-        pos[0] = pos[0] + vel[0]
-        pos[1] = pos[1] + vel[1]
-        if not 0 <= pos[0] <= WINSIZE[0] or not 0 <= pos[1] <= WINSIZE[1]:
-            vel[:], pos[:] = init_star()
-        else:
-            vel[0] = vel[0] * 1.05
-            vel[1] = vel[1] * 1.05
-
-
 def update_fps(clock, font):
     fps = str(int(clock.get_fps()))
     fps_text = font.render(fps, 1, pg.Color("coral"))
     return fps_text
+
+
+def draw_octagon_in_center(screen, color, offset: int):
+    num_sides = 8
+    step = 2 * math.pi / num_sides
+    shift = (math.pi / 180.0) * 45 * 0.5
+
+    points: tuple[int, int] = list()
+    for i in range(0, num_sides):
+        segment = i * step + shift
+        points.append((math.cos(segment), math.sin(segment)))
+
+    translated_points: tuple[int, int] = list()
+    for point in points:
+        translated_points.append(
+            (point[0] * offset + WINCENTER[0], point[1] * offset + WINCENTER[1])
+        )
+
+    pg.draw.polygon(screen, color, translated_points, 1)
 
 
 def main():
@@ -112,48 +105,46 @@ def main():
 
     # create our starfield
     random.seed()
-    stars = initialize_stars()
     clock = pg.time.Clock()
+
     # initialize and prepare screen
     pg.init()
     screen = pg.display.set_mode(WINSIZE)
-    pg.display.set_caption("pygame Stars Example")
-    white = 255, 240, 200
-    black = 20, 20, 40
-    red = 255, 0, 0
-    green = (0, 255, 0)
+    pg.display.set_caption("Ultimate Pentagon")
+
+    # Colors
+    white: tuple[int, int, int] = (255, 240, 200)
+    black: tuple[int, int, int] = (20, 20, 40)
+    red: tuple[int, int, int] = (255, 0, 0)
+    green: tuple[int, int, int] = (0, 255, 0)
+
     screen.fill(black)
 
     clock = pg.time.Clock()
     font = pg.font.SysFont("Arial", 18)
 
+    # Where 1 is outside of the screen, and 0 is at the center of the screen.
+    obstacle_positions: list[int] = [-1]
+
+    # Where 0 through 7 are the segments of an octagon.
+    obstacle_sections: list[int] = [-1]
+
+    accumulated_time = 0
+    total_spawned_obstacles = 0
+
     # main game loop
     done = 0
     while not done:
         dt = clock.tick(120)
+        accumulated_time += dt
+
         screen.fill(black)
         offset = 40
 
-        # Generate points
-        length_of_side_point = math.sqrt(2) / 2
+        # if accumulated_time > (total_spawned_obstacles * 2000) + 2000:
+        # create_obstacle(obstacle_positions, obstacle_sections)
 
-        original_points = [
-            (0, 1),
-            (length_of_side_point, length_of_side_point),
-            (1, 0),
-            (length_of_side_point, -length_of_side_point),
-            (0, -1),
-            (-length_of_side_point, -length_of_side_point),
-            (-1, 0),
-            (-length_of_side_point, length_of_side_point),
-        ]
-        translated_points = list()
-        for point in original_points:
-            translated_points.append(
-                (point[0] * offset + WINCENTER[0], point[1] * offset + WINCENTER[1])
-            )
-
-        pg.draw.polygon(screen, green, translated_points, 1)
+        draw_octagon_in_center(screen, green, offset)
 
         x, y = field.get_position(character)
         draw_circle(screen, red, x, y)
