@@ -77,7 +77,7 @@ def update_fps(clock, font):
     return fps_text
 
 
-def draw_octagon_in_center(screen, color, offset: int):
+def generate_octagon_unit_verticies() -> list[tuple[int, int]]:
     num_sides = 8
     step = 2 * math.pi / num_sides
     shift = (math.pi / 180.0) * 45 * 0.5
@@ -87,13 +87,39 @@ def draw_octagon_in_center(screen, color, offset: int):
         segment = i * step + shift
         points.append((math.cos(segment), math.sin(segment)))
 
+    return points
+
+
+def translate_octagon_vertices_to_screen_space(
+    unit_space_points: list[tuple[int, int]], offset: int
+) -> list[tuple[int, int]]:
     translated_points: tuple[int, int] = list()
-    for point in points:
+    for point in unit_space_points:
         translated_points.append(
             (point[0] * offset + WINCENTER[0], point[1] * offset + WINCENTER[1])
         )
 
+    return translated_points
+
+
+def draw_octagon_in_center(screen, color, offset: int):
+    points: tuple[int, int] = generate_octagon_unit_verticies()
+
+    translated_points: tuple[int, int] = translate_octagon_vertices_to_screen_space(
+        points, offset
+    )
+
     pg.draw.polygon(screen, color, translated_points, 1)
+
+
+def calculate_segments(offset: int):
+    points: tuple[int, int] = generate_octagon_unit_verticies()
+
+    translated_points: tuple[int, int] = translate_octagon_vertices_to_screen_space(
+        points, offset
+    )
+
+    # Do fancy stuff with the translated points
 
 
 def main():
