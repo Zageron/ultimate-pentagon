@@ -112,14 +112,92 @@ def draw_octagon_in_center(screen, color, offset: int):
     pg.draw.polygon(screen, color, translated_points, 1)
 
 
-def calculate_segments(offset: int):
+def calculate_segments(screen, offset: int):
     points: tuple[int, int] = generate_octagon_unit_verticies()
 
     translated_points: tuple[int, int] = translate_octagon_vertices_to_screen_space(
         points, offset
     )
 
-    # Do fancy stuff with the translated points
+    # Middle bottom right line
+    line0 = pg.draw.line(
+        screen,
+        (100, 0, 0),
+        (translated_points[0]),
+        (translated_points[0][0] + 1300, translated_points[0][1] + 1000),
+        1,
+    )
+
+    # Bottom right line
+    line1 = pg.draw.line(
+        screen,
+        (100, 0, 0),
+        (translated_points[1]),
+        (translated_points[0][0] + 1500, translated_points[0][1] + 2000),
+        1,
+    )
+
+    segment1 = [line0, line1]
+
+    # Bottom left line
+    line2 = pg.draw.line(
+        screen,
+        (100, 0, 0),
+        (translated_points[2]),
+        (translated_points[0][0] + -300, translated_points[0][1] + 1000),
+        1,
+    )
+
+    # Middle bottom left line
+    line3 = pg.draw.line(
+        screen,
+        (100, 0, 0),
+        (translated_points[3]),
+        (translated_points[0][0] + -1500, translated_points[0][1] + 1500),
+        1,
+    )
+
+    segment2 = [line2, line3]
+
+    # Middle top left line
+    line4 = pg.draw.line(
+        screen,
+        (100, 0, 0),
+        (translated_points[4]),
+        (translated_points[0][0] + -9500, translated_points[0][1] + -3000),
+        1,
+    )
+
+    # Top left line
+    line5 = pg.draw.line(
+        screen,
+        (100, 0, 0),
+        (translated_points[5]),
+        (translated_points[0][0] + -9500, translated_points[0][1] + -9500),
+        1,
+    )
+
+    segment3 = [line4, line5]
+
+    # Top right line
+    line6 = pg.draw.line(
+        screen,
+        (100, 0, 0),
+        (translated_points[6]),
+        (translated_points[0][0] + 400, translated_points[0][1] + -1000),
+        1,
+    )
+
+    # Middle top right line
+    line7 = pg.draw.line(
+        screen,
+        (100, 0, 0),
+        (translated_points[7]),
+        (translated_points[0][0] + 9500, translated_points[0][1] + -1000),
+        1,
+    )
+
+    segment4 = [line6, line7]
 
 
 def main():
@@ -171,6 +249,8 @@ def main():
         # create_obstacle(obstacle_positions, obstacle_sections)
 
         draw_octagon_in_center(screen, green, offset)
+
+        calculate_segments(screen, offset)
 
         x, y = field.get_position(character)
         draw_circle(screen, red, x, y)
