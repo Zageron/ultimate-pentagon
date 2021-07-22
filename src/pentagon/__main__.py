@@ -124,7 +124,7 @@ def calculate_segments(screen, offset: int):
         screen,
         (100, 0, 0),
         (translated_points[0]),
-        (translated_points[0][0] + 0.1 * 9500, translated_points[0][1] + 100),
+        (translated_points[0][0] + 0.1 * 40, translated_points[0][1] + .1 * 100),
         1,
     )
 
