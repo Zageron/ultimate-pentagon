@@ -7,6 +7,7 @@ The entrypoint for both poetry and Nuitka
 
 import random
 import math
+import numpy as np
 import pygame as pg
 
 # constants
@@ -77,8 +78,7 @@ def update_fps(clock, font):
     return fps_text
 
 
-def generate_octagon_unit_verticies() -> list[tuple[int, int]]:
-    num_sides = 8
+def generate_octagon_unit_verticies(num_sides: int) -> list[tuple[int, int]]:
     step = 2 * math.pi / num_sides
     shift = (math.pi / 180.0) * 45 * 0.5
 
@@ -102,8 +102,8 @@ def translate_octagon_vertices_to_screen_space(
     return translated_points
 
 
-def draw_octagon_in_center(screen, color, offset: int):
-    points: tuple[int, int] = generate_octagon_unit_verticies()
+def draw_octagon_in_center(screen, color, offset: int, segment_count: int):
+    points: tuple[int, int] = generate_octagon_unit_verticies(segment_count)
 
     translated_points: tuple[int, int] = translate_octagon_vertices_to_screen_space(
         points, offset
@@ -112,92 +112,27 @@ def draw_octagon_in_center(screen, color, offset: int):
     pg.draw.polygon(screen, color, translated_points, 1)
 
 
-def calculate_segments(screen, offset: int):
-    points: tuple[int, int] = generate_octagon_unit_verticies()
+def calculate_segments(
+    screen, offset: int, segment_count: int, colors: list[pg.Color],
+):
+    points: tuple[int, int] = generate_octagon_unit_verticies(segment_count)
 
-    translated_points: tuple[int, int] = translate_octagon_vertices_to_screen_space(
-        points, offset
-    )
+    length = 10
 
-    # Middle bottom right line
-    line0 = pg.draw.line(
-        screen,
-        (100, 0, 0),
-        (translated_points[0]),
-        (translated_points[0][0] + 0.1 * 40, translated_points[0][1] + .1 * 100),
-        1,
-    )
+    index: int = 0
+    for point in points:
+        pg.draw.line(
+            screen,
+            colors[index],
+            (point[0] * offset + WINCENTER[0], point[1] * offset + WINCENTER[1]),
+            (
+                point[0] * offset * length + WINCENTER[0],
+                point[1] * offset * length + WINCENTER[1],
+            ),
+            1,
+        )
 
-    # Bottom right line
-    line1 = pg.draw.line(
-        screen,
-        (100, 0, 0),
-        (translated_points[1]),
-        (translated_points[0][0] + 1500, translated_points[0][1] + 2000),
-        1,
-    )
-
-    segment1 = [line0, line1]
-
-    # Bottom left line
-    line2 = pg.draw.line(
-        screen,
-        (100, 0, 0),
-        (translated_points[2]),
-        (translated_points[0][0] + -300, translated_points[0][1] + 1000),
-        1,
-    )
-
-    # Middle bottom left line
-    line3 = pg.draw.line(
-        screen,
-        (100, 0, 0),
-        (translated_points[3]),
-        (translated_points[0][0] + -1500, translated_points[0][1] + 1500),
-        1,
-    )
-
-    segment2 = [line2, line3]
-
-    # Middle top left line
-    line4 = pg.draw.line(
-        screen,
-        (100, 0, 0),
-        (translated_points[4]),
-        (translated_points[0][0] + -9500, translated_points[0][1] + -3000),
-        1,
-    )
-
-    # Top left line
-    line5 = pg.draw.line(
-        screen,
-        (100, 0, 0),
-        (translated_points[5]),
-        (translated_points[0][0] + -9500, translated_points[0][1] + -9500),
-        1,
-    )
-
-    segment3 = [line4, line5]
-
-    # Top right line
-    line6 = pg.draw.line(
-        screen,
-        (100, 0, 0),
-        (translated_points[6]),
-        (translated_points[0][0] + 400, translated_points[0][1] + -1000),
-        1,
-    )
-
-    # Middle top right line
-    line7 = pg.draw.line(
-        screen,
-        (100, 0, 0),
-        (translated_points[7]),
-        (translated_points[0][0] + 9500, translated_points[0][1] + -1000),
-        1,
-    )
-
-    segment4 = [line6, line7]
+        index += 1
 
 
 def main():
@@ -217,7 +152,7 @@ def main():
     pg.display.set_caption("Ultimate Pentagon")
 
     # Colors
-    white: tuple[int, int, int] = (255, 240, 200)
+    # white: tuple[int, int, int] = (255, 240, 200)
     black: tuple[int, int, int] = (20, 20, 40)
     red: tuple[int, int, int] = (255, 0, 0)
     green: tuple[int, int, int] = (0, 255, 0)
@@ -228,13 +163,18 @@ def main():
     font = pg.font.SysFont("Arial", 18)
 
     # Where 1 is outside of the screen, and 0 is at the center of the screen.
-    obstacle_positions: list[int] = [-1]
+    # obstacle_positions: list[int] = [-1]
 
     # Where 0 through 7 are the segments of an octagon.
-    obstacle_sections: list[int] = [-1]
+    # obstacle_sections: list[int] = [-1]
 
     accumulated_time = 0
-    total_spawned_obstacles = 0
+    # total_spawned_obstacles = 0
+    segment_count = 8
+
+    colors: list[pg.Color] = list()
+    for _ in range(segment_count):
+        colors.append(pg.Color(np.random.choice(range(256), size=3)))
 
     # main game loop
     done = 0
@@ -248,9 +188,9 @@ def main():
         # if accumulated_time > (total_spawned_obstacles * 2000) + 2000:
         # create_obstacle(obstacle_positions, obstacle_sections)
 
-        draw_octagon_in_center(screen, green, offset)
+        draw_octagon_in_center(screen, green, offset, segment_count)
 
-        calculate_segments(screen, offset)
+        calculate_segments(screen, offset, segment_count, colors)
 
         x, y = field.get_position(character)
         draw_circle(screen, red, x, y)
