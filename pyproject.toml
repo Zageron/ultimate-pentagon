@@ -13,6 +13,7 @@ python = "^3.9"
 pygame = "^2.0.1"
 Nuitka = "^0.6.16"
 pygame-gui = "^0.5.7"
+numpy = "^1.21.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.2"
