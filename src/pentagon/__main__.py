@@ -135,6 +135,10 @@ def calculate_segments(
         index += 1
 
 
+def lerp(norm: int, min: int, max: int):
+    return max - min * norm + min
+
+
 def main():
     "This is the starfield code"
 
