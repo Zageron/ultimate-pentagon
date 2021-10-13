@@ -1,11 +1,13 @@
 {
+    "version": "0.1.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "pentagon",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal"
+            "cwd": "${workspaceFolder}",
+            "module": "pentagon",
+            "args": []
         }
     ]
 }

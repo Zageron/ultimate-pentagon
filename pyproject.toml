@@ -10,17 +10,22 @@ packages = [{ include = "pentagon", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pygame = "^2.0.1"
-Nuitka = "^0.6.16"
+pygame = "^2.0.2"
 pygame-gui = "^0.5.7"
 numpy = "^1.21.1"
 
 [tool.poetry.dev-dependencies]
-flake8 = "^3.8.2"
+flake8 = "^4.0.1"
 pylint = "^2.5.2"
-black = "^19.10b0"
-pytest = "^5.4.2"
-pyinstaller = "^3.6"
+black = "^21.9b0"
+pytest = "^6.2.5"
+Nuitka = "^0.6.17"
+
+[tool.poetry.scripts]
+my-project = "ultimate-pentagon.pentagon:run"
+
+[tool.pyright]
+include = ["src"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
